@@ -1,13 +1,11 @@
-#!/usr/bin/env python
-from __future__ import unicode_literals
+#!/usr/bin/env python3
 
 # TODO
 # Write about this file
 
 
-def main(argv=None):
-    """
+def main(argv: None = None) -> None:
+	"""
     TODO: main func desc
     """
-
-    print("Hello, World!")
+	pass
