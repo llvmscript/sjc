@@ -143,7 +143,7 @@ def tokenize(source: str) -> list[Token]:
 			cursor += 1
 			literal = ""
 			while cursor < len(source) and source[cursor] != '"':
-				if source[cursor] != "\n":
+				if source[cursor] == "\n":
 					raise SyntaxError(
 					    "Cannot have new lines in double quoted strings",
 					    ("test.py", 100, 10, "print bar"))
@@ -155,7 +155,7 @@ def tokenize(source: str) -> list[Token]:
 			cursor += 1
 			literal = ""
 			while cursor < len(source) and source[cursor] != "'":
-				if source[cursor] != "\n":
+				if source[cursor] == "\n":
 					raise SyntaxError(
 					    "Cannot have new lines in single quoted strings")
 				literal += source[cursor]
@@ -204,12 +204,7 @@ def main():
 	# let a = 1;
 	# """)
 	tokenize("""
-console.log("goofy
-aaaaa
-)
-if (`5 < 5`) {
-	console.log("yay");
-}
+"help"
 """)
 
 
