@@ -47,7 +47,7 @@ def tokenize(source: str) -> list[Token]:
 		elif source[cursor] == ')':
 			tokens.append(Token(source[cursor], TokenType.CLOSE_PAREN))
 			cursor += 1
-		elif source[cursor] in ('+', '-', '*', '/'):
+		elif source[cursor] in ('+', '-', '*', '/', '%'):
 			if source[cursor] == '+' and source[cursor + 1] == '+':
 				tokens.append(
 				    Token(source[cursor] + source[cursor + 1],
