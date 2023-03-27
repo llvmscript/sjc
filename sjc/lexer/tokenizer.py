@@ -34,9 +34,9 @@ class Token:
 	type: TokenType
 
 
-def tokenize(source: str) -> Token:
+def tokenize(source: str) -> list[Token]:
 	cursor = 0
-	tokens = []
+	tokens: list[Token] = []
 
 	print(source)
 
@@ -153,6 +153,8 @@ def tokenize(source: str) -> Token:
 
 	for token in tokens:
 		print(token)
+
+	return tokens
 
 
 def main():
