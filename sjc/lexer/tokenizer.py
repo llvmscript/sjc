@@ -10,15 +10,24 @@ class TokenType(Enum):
 	EQUALS = auto()
 	OPEN_PAREN = auto()
 	CLOSE_PAREN = auto()
+	OPEN_BLOCK = auto()
+	CLOSE_BLOCK = auto()
 	ARITHMETIC_OPERATOR = auto()
 	RELATIONAL_OPERATOR = auto()
 	UNARY_OPERATOR = auto()
 	LET = auto()
 	CONST = auto()
+	CONDITIONAL_IF = auto()
+	CONDITIONAL_ELSE = auto()
 	LINE_BREAK = auto()
 
 
-KEYWORDS = {"let": TokenType.LET, 'const': TokenType.CONST}
+KEYWORDS = {
+    "let": TokenType.LET,
+    'const': TokenType.CONST,
+    'if': TokenType.CONDITIONAL_IF,
+    'else': TokenType.CONDITIONAL_ELSE
+}
 
 
 class Token:
@@ -46,6 +55,12 @@ def tokenize(source: str) -> list[Token]:
 			cursor += 1
 		elif source[cursor] == ')':
 			tokens.append(Token(source[cursor], TokenType.CLOSE_PAREN))
+			cursor += 1
+		elif source[cursor] == '{':
+			tokens.append(Token(source[cursor], TokenType.OPEN_BLOCK))
+			cursor += 1
+		elif source[cursor] == '}':
+			tokens.append(Token(source[cursor], TokenType.CLOSE_BLOCK))
 			cursor += 1
 		elif source[cursor] in ('+', '-', '*', '/', '%'):
 			if source[cursor] == '+' and source[cursor + 1] == '+':
@@ -166,10 +181,9 @@ def main():
 	# let a = 1;
 	# """)
 	tokenize("""
-a==b
-a===b
-a!=b
-a!==b
+if (5 < 5) {
+	console.log("yay");
+}
 """)
 
 
