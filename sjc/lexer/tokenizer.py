@@ -63,15 +63,16 @@ def tokenize(source: str) -> list[Token]:
 			tokens.append(Token(source[cursor], TokenType.CLOSE_BLOCK))
 			cursor += 1
 		elif source[cursor] in ('+', '-', '*', '/', '%'):
-			if source[cursor] == '+' and source[cursor + 1] == '+':
+			if source[cursor] in '+-' and source[cursor + 1] == source[cursor]:
 				tokens.append(
 				    Token(source[cursor] + source[cursor + 1],
 				          TokenType.UNARY_OPERATOR))
 				cursor += 2
-			elif source[cursor] == '-' and source[cursor + 1] == '-':
+			elif source[cursor] in "*/" and source[cursor +
+			                                       1] == source[cursor]:
 				tokens.append(
 				    Token(source[cursor] + source[cursor + 1],
-				          TokenType.UNARY_OPERATOR))
+				          TokenType.ARITHMETIC_OPERATOR))
 				cursor += 2
 			else:
 				tokens.append(
@@ -93,8 +94,6 @@ def tokenize(source: str) -> list[Token]:
 				tokens.append(Token(source[cursor], TokenType.EQUALS))
 				cursor += 1
 		elif source[cursor] == '!':
-			# TODO: this is tricky so we'll just leave it like this for now
-			# because ! can be used to invert statements e.g. !(a > b)
 			if source[cursor + 2] == '=':
 				tokens.append(
 				    Token(
@@ -132,6 +131,7 @@ def tokenize(source: str) -> list[Token]:
 				cursor += 1
 		elif source[cursor].isnumeric():
 			num = ""
+			# Find the rest of the number
 			while cursor < len(source) and source[cursor].isnumeric():
 				num += source[cursor]
 				cursor += 1
@@ -142,8 +142,10 @@ def tokenize(source: str) -> list[Token]:
 		elif source[cursor] == '"':
 			cursor += 1
 			literal = ""
+			# Find the rest of the string
 			while cursor < len(source) and source[cursor] != '"':
 				if source[cursor] == "\n":
+					# TODO: implement SourceLocation and use it here
 					raise SyntaxError(
 					    "Cannot have new lines in double quoted strings",
 					    ("test.py", 100, 10, "print bar"))
@@ -154,10 +156,13 @@ def tokenize(source: str) -> list[Token]:
 		elif source[cursor] == "'":
 			cursor += 1
 			literal = ""
+			# Find the rest of the string
 			while cursor < len(source) and source[cursor] != "'":
 				if source[cursor] == "\n":
+					# TODO: implement SourceLocation and use it here
 					raise SyntaxError(
-					    "Cannot have new lines in single quoted strings")
+					    "Cannot have new lines in single quoted strings",
+					    ("test.py", 100, 10, "print bar"))
 				literal += source[cursor]
 				cursor += 1
 			tokens.append(Token(literal, TokenType.STRING))
@@ -204,7 +209,7 @@ def main():
 	# let a = 1;
 	# """)
 	tokenize("""
-"help"
+2.0
 """)
 
 
