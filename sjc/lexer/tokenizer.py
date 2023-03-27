@@ -78,10 +78,23 @@ def tokenize(source: str) -> Token:
 				tokens.append(Token(source[cursor], TokenType.EQUALS))
 				cursor += 1
 		elif source[cursor] == '!':
-			# TODO: this is tricky so we'll just leave it at that for now
+			# TODO: this is tricky so we'll just leave it like this for now
 			# because ! can be used to invert statements e.g. !(a > b)
-			tokens.append(Token(source[cursor], TokenType.RELATIONAL_OPERATOR))
-			cursor += 1
+			if source[cursor + 2] == '=':
+				tokens.append(
+				    Token(
+				        source[cursor] + source[cursor + 1] +
+				        source[cursor + 2], TokenType.RELATIONAL_OPERATOR))
+				cursor += 3
+			elif source[cursor + 1] == '=':
+				tokens.append(
+				    Token(source[cursor] + source[cursor + 1],
+				          TokenType.RELATIONAL_OPERATOR))
+				cursor += 2
+			else:
+				tokens.append(
+				    Token(source[cursor], TokenType.RELATIONAL_OPERATOR))
+				cursor += 1
 		elif source[cursor] == '>':
 			if source[cursor + 1] == '=':
 				tokens.append(
@@ -151,7 +164,10 @@ def main():
 	# let a = 1;
 	# """)
 	tokenize("""
-8==========D
+a==b
+a===b
+a!=b
+a!==b
 """)
 
 
