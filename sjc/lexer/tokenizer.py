@@ -1,5 +1,5 @@
 from enum import Enum, auto
-from timeit import default_timer as timer
+import time
 
 
 class TokenType(Enum):
@@ -132,7 +132,8 @@ def tokenize(source: str) -> list[Token]:
 		elif source[cursor].isnumeric():
 			num = ""
 			# Find the rest of the number
-			while cursor < len(source) and source[cursor].isnumeric():
+			while cursor < len(source) and (source[cursor].isnumeric()
+			                                or source[cursor] == '.'):
 				num += source[cursor]
 				cursor += 1
 			tokens.append(Token(num, TokenType.NUMBER))
@@ -209,12 +210,14 @@ def main():
 	# let a = 1;
 	# """)
 	tokenize("""
-2.0
+{
+	key: "value"
+}
 """)
 
 
 if __name__ == '__main__':
-	start = timer()
+	start = time.time()
 	main()
-	end = timer()
-	print(f"Execution completed in {end - start}s")
+	end = time.time()
+	print(f"Execution completed in {(end - start) * 1000}ms")
